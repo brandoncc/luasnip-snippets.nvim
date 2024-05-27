@@ -5,8 +5,6 @@ local function all_snippets()
 
   if not vim.fn.isdirectory(table.concat({ init_path, "snippets" }, "/")) then
     error("Unable to find snippets directory")
-
-    return {}
   end
 
   local snippets_directory = table.concat({ init_path, "snippets" }, "/")
