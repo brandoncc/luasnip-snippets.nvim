@@ -234,4 +234,10 @@ ls.add_snippets("ruby", {
     i(1),
     t({ "", "end" }),
   }),
+  s({
+    trig = "rt",
+    name = "Require test_helper for minitest",
+  }, {
+    t('require "test_helper"'),
+  }),
 })
