@@ -54,6 +54,16 @@ local function path_without_rails_organization_directories(path)
   return path
 end
 
+local function path_without_test_dummy(path)
+  if path:find("^test/dummy/") then
+    return path:gsub("^test/dummy/", "") -- removes "test/dummy/" from the beginning of the string
+  elseif path:find("^spec/dummy/") then
+    return path:gsub("^spec/dummy/", "") -- removes "spec/dummy/" from the beginning of the string
+  end
+
+  return path
+end
+
 local function project_has_application_test_case()
   vim.fn.system("rg ApplicationTestCase -q -t ruby")
 
@@ -73,7 +83,7 @@ local function project_has_admin_controller()
 end
 
 local function inheritance_node()
-  local path = relative_file_path_without_extension()
+  local path = path_without_test_dummy(relative_file_path_without_extension())
 
   if path:find("^app/controllers/concerns") or path:find("^app/models/concerns") then
     return nil
@@ -171,7 +181,8 @@ local function build_ruby_class_structure(constants, structure, indentation_leve
 end
 
 local function ruby_class_structure_nodes()
-  local path = path_without_rails_organization_directories(relative_file_path_without_extension())
+  local path =
+    path_without_rails_organization_directories(path_without_test_dummy(relative_file_path_without_extension()))
   local parts = vim.tbl_map(function(p)
     return to_pascal_case(p)
   end, vim.split(path, "/", {}))
